@@ -1,0 +1,7 @@
+break ages.asm
+break ages.o
+break ages
+break rotp
+run
+break ages
+run

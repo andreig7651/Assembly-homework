@@ -1,0 +1,55 @@
+Gavriliu Andrei-Mihai 323CB
+
+Task 1
+    -avem bucla xor_string unde il avem ca si contor pe ecx si folosim instructiunea loop pentru ciclare;
+    -in eax vom muta lungimea sirului(len);
+    -construim plain[i] in ebx;
+    -in eax construim indicele lui key;
+    -efectuam operatia de xor,care se va stoca in ebx;
+    -mutam rezultatul xor-ului(care e pe un singur octet) in edx si astfel obtinem ciphertext;
+    -ciphertext fiind un sir de caractere,nu folosim tot registrul,ci doar un singur octet;
+
+Task 2
+    -bucla age_calculator e bucla principala in care iteram prin lista de colegi si le calculam varstele;
+    -scadem o unitate din edx(bucla merge de la edx-1 la 0);
+    -in ebx punem anul curent,apoi il comparam cu anul de nastere al primului coechipier;
+    -daca e mai mic,ne vom duce pe eticheta year_0_age,unde initializam varsta,in sirul ecx,cu 0;
+    -apoi comparam edx cu 0 sa vedem daca am parcurs toti colegii si sarim la end,altfel sarim la age_calculator;
+    -in cazul in care anul curent este mai mare decat anul de nastere,facem o diferenta intre cei 2 ani,pe car o stocam in ebx;
+    -stocam si comparam lunile,dar de data aceasta doar jumatate de registru(2 octeti si nu tot registrul);avem tipul word;
+    -in functie de rezultatul comparatiei,evem 3 bucle diferite;
+    -great_month:-in cazul in care luna prezenta este mai mare decat cea a zilei de nastere;
+                 -diferenta din ebx ramane nemodificata;verificam contorul edx si vedem daca suntem la ultimul coleg sau nu si 
+                 sarim la label-ul corespunzator;
+    -less_month:-in cazul in care luna prezenta este mai mica decat cea a zilei de nastere;
+                -comparam diferenta anilor cu 0,pentru a verifica daca colegul e nascut in acelasi an;
+                -daca e egala cu 0,facem jump pe eticheta month_0_age unde vom pune valoarea 0 in sir,iar apo decidem daca suntem la
+                ultimul coleg sau nu;
+                -daca nu e egala cu 0,decrementam ebx cu o unitate,iar in continuare ajungem tot pe month_0_age,unde punem valoarea decrementata in sir;
+    -equal_month:-in cazul in care lunile sunt egale,va trebui sa comparam zilele;
+                 -daca ziua curenta este mai mica decat ziua de nastere,vom sari la less_day,unde comparam diferenta varstelor cu 0;
+                 -daca diferenta este 0,vom ajunge pe label-ul day_0_age,care pune 0,valoarea din ebx,in sir;
+                 -comparam contorul cu 0 si decide ce e de facut;
+                 -daca diferenta este mai mare decat 0,decrementam varsta cu o unitate si apoi ajungem la day_0_age unde punem varsta in sir;
+                 -daca ziua curenta este mai mare sau egala decat ziua de nastere,vom sari la great_day;varsta din ebx nu se modifica;
+                 -verificam tot aici daca am ajuns la ultimul coechipier sau nu;(sarim la end sau la urmatorul coechipier);
+    -repetam acest procedeu pana parcurgem toata lungimea din edx;
+
+Task 3
+    -initializam o variabila globala offset cu 0,in care vom stoca valorile din key;
+    -initializam ecx cu 0,pe care il vom folosi drept contor;
+    -intram pe bucla key_iterration,unde vom itera pe vectorul key;
+    -in edx mutam primul element din vectorul key;
+    -offset va deveni prima valoare din key;
+    -bucla text-bucla in care prelucram sirul primit ca input;
+    -in eax punem pointerul la inceputul sirului,apoi il deplasam in functie de offset;
+    -din aceasta pozitie va trebui sa mergem din len_cheie in len_cheie ori,dar fara a depasi len_haystack;
+    -in dl mutam primul byte de la adresa eax,deci prima litera din cod;apoi mutam dl in primul octet de la adresa ebc;
+    -deplasam pointerul din ebx la octetul urmator;in edx construim indexul literei urmatoare,adica key+len_cheie;
+    -comparam indexul din edx cu len_cheie;
+    -daca e mai mic,vom ajunge in eticheta next_letter,unde declaram offset-ul urmator care se afla la len_cheie unitati fata
+    de cel precedent si sarim la eticheta text unde vom prelucra urmatoarea litera din sir;
+    -daca e mai mare am terminat cu key-ul respectiv si trecem la urmatorul,incrementand ecx;
+    si verificand daca am ajuns la ultimul element din cheie sau nu;daca nu am ajuns,revenim in bucla key_iterration
+    -daca am ajuns la ultimul iesim din program prin ending;
+    -repetam procedeul pana parcurgem toata lungimea cheii si toate elementele din key;
